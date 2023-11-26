@@ -312,6 +312,9 @@ and instr : t -> Format.formatter -> Ollvm_ast.instr -> unit =
   | INSTR_Load (vol, tv, a) ->
      pp_print_string ppf "load " ;
      if vol then pp_print_string ppf "volatile " ;
+     let (TYPE_Pointer t, _) = tv in
+     typ ppf t;
+     pp_print_string ppf ", ";
      (tvalue env) ppf tv ;
      (match a with None -> ()
                  | Some a -> fprintf ppf ", align %d" a)
