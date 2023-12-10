@@ -1,11 +1,15 @@
 (copy_files ./src/ollvm/*.ml)
+
 (copy_files ./src/ollvm/*.mli)
+
 (copy_files ./src/ollvm/*.mll)
+
 (copy_files ./src/ollvm/*.mly)
 
 (env
-  (dev
-    (flags (:standard -warn-error -A))))
+ (dev
+  (flags
+   (:standard -warn-error -A))))
 
 (menhir
  (modules ollvm_parser)

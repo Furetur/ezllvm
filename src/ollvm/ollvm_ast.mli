@@ -1,5 +1,5 @@
 type linkage =
-    LINKAGE_Private
+  | LINKAGE_Private
   | LINKAGE_Internal
   | LINKAGE_Available_externally
   | LINKAGE_Linkonce
@@ -10,14 +10,13 @@ type linkage =
   | LINKAGE_Linkonce_odr
   | LINKAGE_Weak_odr
   | LINKAGE_External
+
 and dll_storage = DLLSTORAGE_Dllimport | DLLSTORAGE_Dllexport
-and visibility =
-    VISIBILITY_Default
-  | VISIBILITY_Hidden
-  | VISIBILITY_Protected
+and visibility = VISIBILITY_Default | VISIBILITY_Hidden | VISIBILITY_Protected
 and cconv = CC_Ccc | CC_Fastcc | CC_Coldcc | CC_Cc of int
+
 and param_attr =
-    PARAMATTR_Zeroext
+  | PARAMATTR_Zeroext
   | PARAMATTR_Signext
   | PARAMATTR_Inreg
   | PARAMATTR_Byval
@@ -30,8 +29,9 @@ and param_attr =
   | PARAMATTR_Returned
   | PARAMATTR_Nonnull
   | PARAMATTR_Dereferenceable of int
+
 and fn_attr =
-    FNATTR_Alignstack of int
+  | FNATTR_Alignstack of int
   | FNATTR_Alwaysinline
   | FNATTR_Builtin
   | FNATTR_Cold
@@ -62,9 +62,11 @@ and fn_attr =
   | FNATTR_String of string
   | FNATTR_Key_value of string * string
   | FNATTR_Attr_grp of int
+
 and ident = ID_Global of string | ID_Local of string
+
 and typ =
-    TYPE_I of int
+  | TYPE_I of int
   | TYPE_Pointer of typ
   | TYPE_Void
   | TYPE_Half
@@ -82,16 +84,19 @@ and typ =
   | TYPE_Packed_struct of typ list
   | TYPE_Opaque
   | TYPE_Vector of (int * typ)
+
 and metadata =
-    METADATA_Const of tvalue
+  | METADATA_Const of tvalue
   | METADATA_Null
   | METADATA_Id of string
   | METADATA_String of string
   | METADATA_Named of string list
   | METADATA_Node of metadata list
+
 and icmp = Eq | Ne | Ugt | Uge | Ult | Ule | Sgt | Sge | Slt | Sle
+
 and fcmp =
-    False
+  | False
   | Oeq
   | Ogt
   | Oge
@@ -107,8 +112,9 @@ and fcmp =
   | Ule
   | Une
   | True
+
 and ibinop =
-    Add of bool * bool
+  | Add of bool * bool
   | Sub of bool * bool
   | Mul of bool * bool
   | Shl of bool * bool
@@ -121,10 +127,12 @@ and ibinop =
   | And
   | Or
   | Xor
+
 and fbinop = FAdd | FSub | FMul | FDiv | FRem
 and fast_math = Nnan | Ninf | Nsz | Arcp | Fast
+
 and conversion_type =
-    Trunc
+  | Trunc
   | Zext
   | Sext
   | Fptrunc
@@ -136,10 +144,12 @@ and conversion_type =
   | Inttoptr
   | Ptrtoint
   | Bitcast
+
 and tvalue = typ * value
 and tident = typ * ident
+
 and value =
-    VALUE_Ident of ident
+  | VALUE_Ident of ident
   | VALUE_Integer of int
   | VALUE_Float of float
   | VALUE_Bool of bool
@@ -150,8 +160,9 @@ and value =
   | VALUE_Array of tvalue list
   | VALUE_Vector of tvalue list
   | VALUE_Zero_initializer
+
 and instr =
-    INSTR_IBinop of ibinop * typ * value * value
+  | INSTR_IBinop of ibinop * typ * value * value
   | INSTR_ICmp of icmp * typ * value * value
   | INSTR_FBinop of fbinop * fast_math list * typ * value * value
   | INSTR_FCmp of fcmp * typ * value * value
@@ -183,8 +194,9 @@ and instr =
   | INSTR_Resume of tvalue
   | INSTR_Unreachable
   | INSTR_Assign of ident * instr
+
 and toplevelentry =
-    TLE_Target of string
+  | TLE_Target of string
   | TLE_Datalayout of string
   | TLE_Declaration of declaration
   | TLE_Definition of definition
@@ -192,7 +204,9 @@ and toplevelentry =
   | TLE_Global of global
   | TLE_Metadata of string * metadata
   | TLE_Attribute_group of int * fn_attr list
+
 and toplevelentries = toplevelentry list
+
 and global = {
   g_ident : ident;
   g_typ : typ;
@@ -208,12 +222,15 @@ and global = {
   g_section : string option;
   g_align : int option;
 }
+
 and thread_local_storage = TLS_Localdynamic | TLS_Initialexec | TLS_Localexec
+
 and declaration = {
   dc_name : ident;
   dc_type : typ;
   dc_param_attrs : param_attr list * param_attr list list;
 }
+
 and definition = {
   df_prototype : declaration;
   df_args : ident list;
@@ -227,7 +244,9 @@ and definition = {
   df_align : int option;
   df_gc : string option;
 }
+
 and block = string * instr list
+
 and modul = {
   m_name : string;
   m_target : toplevelentry;

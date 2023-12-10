@@ -2,6 +2,7 @@ type t = {
   local : int ref * (int, int) Hashtbl.t;
   global : int ref * (int, int) Hashtbl.t;
 }
+
 val empty_env : unit -> t
 val find_env : int ref * (int, int) Hashtbl.t -> string -> int
 val find_local : t -> string -> int
@@ -28,8 +29,7 @@ val instr : t -> Format.formatter -> Ollvm_ast.instr -> unit
 val value : t -> Format.formatter -> Ollvm_ast.value -> unit
 val tvalue : t -> Format.formatter -> Ollvm_ast.tvalue -> unit
 val tident : t -> Format.formatter -> Ollvm_ast.tident -> unit
-val toplevelentries :
-  t -> Format.formatter -> Ollvm_ast.toplevelentries -> unit
+val toplevelentries : t -> Format.formatter -> Ollvm_ast.toplevelentries -> unit
 val toplevelentry : t -> Format.formatter -> Ollvm_ast.toplevelentry -> unit
 val metadata : t -> Format.formatter -> Ollvm_ast.metadata -> unit
 val global : t -> Format.formatter -> Ollvm_ast.global -> unit

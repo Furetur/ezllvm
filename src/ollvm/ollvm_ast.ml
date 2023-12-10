@@ -1,23 +1,23 @@
- (* {{{ LICENSE                                                              *
-  * vi: set fdm=marker fdl=0:                                                *
-  *                                                                          *
-  * Copyright (c) 2012 Raphaël Proust <raphlalou@gmail.com>                  *
-  * Copyright (c) 2012 INRIA - Raphaël Proust <raphlalou@gmail.com>          *
-  * Copyright (c) 2012 ENS - Raphaël Proust <raphlalou@gmail.com>            *
-  * Copyright (c) 2014 OCamlPro - Julien Sagot <ju.sagot@gmail.com>          *
-  *                                                                          *
-  * Permission to use, copy, modify, and distribute this software for any    *
-  * purpose with or without fee is hereby granted, provided that the above   *
-  * copyright notice and this permission notice appear in all copies.        *
-  *                                                                          *
-  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES *
-  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF         *
-  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR  *
-  * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES   *
-  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN    *
-  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF  *
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.           *
-  * }}}                                                                      *)
+(* {{{ LICENSE                                                              *
+ * vi: set fdm=marker fdl=0:                                                *
+ *                                                                          *
+ * Copyright (c) 2012 Raphaël Proust <raphlalou@gmail.com>                  *
+ * Copyright (c) 2012 INRIA - Raphaël Proust <raphlalou@gmail.com>          *
+ * Copyright (c) 2012 ENS - Raphaël Proust <raphlalou@gmail.com>            *
+ * Copyright (c) 2014 OCamlPro - Julien Sagot <ju.sagot@gmail.com>          *
+ *                                                                          *
+ * Permission to use, copy, modify, and distribute this software for any    *
+ * purpose with or without fee is hereby granted, provided that the above   *
+ * copyright notice and this permission notice appear in all copies.        *
+ *                                                                          *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES *
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF         *
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR  *
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES   *
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN    *
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF  *
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.           *
+ * }}} *)
 
 type linkage =
   | LINKAGE_Private
@@ -32,20 +32,9 @@ type linkage =
   | LINKAGE_Weak_odr
   | LINKAGE_External
 
- and dll_storage =
-  | DLLSTORAGE_Dllimport
-  | DLLSTORAGE_Dllexport
-
-and visibility =
-  | VISIBILITY_Default
-  | VISIBILITY_Hidden
-  | VISIBILITY_Protected
-
-and cconv =
-  | CC_Ccc
-  | CC_Fastcc
-  | CC_Coldcc
-  | CC_Cc of int
+and dll_storage = DLLSTORAGE_Dllimport | DLLSTORAGE_Dllexport
+and visibility = VISIBILITY_Default | VISIBILITY_Hidden | VISIBILITY_Protected
+and cconv = CC_Ccc | CC_Fastcc | CC_Coldcc | CC_Cc of int
 
 and param_attr =
   | PARAMATTR_Zeroext
@@ -95,9 +84,7 @@ and fn_attr =
   | FNATTR_Key_value of string * string (* "unsafe-fp-math"="false" *)
   | FNATTR_Attr_grp of int
 
-and ident =
-  | ID_Global of string
-  | ID_Local  of string
+and ident = ID_Global of string | ID_Local of string
 
 and typ =
   | TYPE_I of int
@@ -127,30 +114,59 @@ and metadata =
   | METADATA_Named of string list
   | METADATA_Node of metadata list
 
-and icmp = Eq|Ne|Ugt|Uge|Ult|Ule|Sgt|Sge|Slt|Sle
+and icmp = Eq | Ne | Ugt | Uge | Ult | Ule | Sgt | Sge | Slt | Sle
 
-and fcmp = False|Oeq|Ogt|Oge|Olt|Ole|One|Ord|Uno|Ueq|Ugt|Uge|Ult|Ule|Une|True
+and fcmp =
+  | False
+  | Oeq
+  | Ogt
+  | Oge
+  | Olt
+  | Ole
+  | One
+  | Ord
+  | Uno
+  | Ueq
+  | Ugt
+  | Uge
+  | Ult
+  | Ule
+  | Une
+  | True
 
+and ibinop =
+  | Add of bool * bool (* nuw * nsw *)
+  | Sub of bool * bool
+  | Mul of bool * bool
+  | Shl of bool * bool
+  | UDiv of bool (* exact *)
+  | SDiv of bool
+  | LShr of bool
+  | AShr of bool
+  | URem
+  | SRem
+  | And
+  | Or
+  | Xor
 
-and ibinop = Add of bool * bool (* nuw * nsw *)
-           | Sub of bool * bool
-           | Mul of bool * bool
-           | Shl of bool * bool
-           | UDiv of bool       (* exact *)
-           | SDiv of bool
-           | LShr of bool
-           | AShr of bool
-           | URem | SRem | And | Or | Xor
-
-and fbinop = FAdd|FSub|FMul|FDiv|FRem
-
+and fbinop = FAdd | FSub | FMul | FDiv | FRem
 and fast_math = Nnan | Ninf | Nsz | Arcp | Fast
 
-and conversion_type = Trunc|Zext|Sext|Fptrunc|Fpext|Uitofp|Sitofp|Fptoui
-                       |Fptosi|Inttoptr|Ptrtoint|Bitcast
+and conversion_type =
+  | Trunc
+  | Zext
+  | Sext
+  | Fptrunc
+  | Fpext
+  | Uitofp
+  | Sitofp
+  | Fptoui
+  | Fptosi
+  | Inttoptr
+  | Ptrtoint
+  | Bitcast
 
 and tvalue = typ * value
-
 and tident = typ * ident
 
 (** FIXME: should be splitted into const/value? *)
@@ -167,7 +183,7 @@ and value =
   | VALUE_Vector of tvalue list
   | VALUE_Zero_initializer
 
- and instr =
+and instr =
   | INSTR_IBinop of ibinop * typ * value * value
   | INSTR_ICmp of icmp * typ * value * value
   | INSTR_FBinop of fbinop * fast_math list * typ * value * value
@@ -181,16 +197,18 @@ and value =
   | INSTR_InsertValue of tvalue * tvalue * int list
   | INSTR_Call of tident * tvalue list
   | INSTR_Alloca of typ * tvalue option * int option (* typ, nb el, align *)
-  | INSTR_Load of bool(*=volatile*) * tvalue * int option (* FIXME: use tident instead of value *)
+  | INSTR_Load of
+      bool (*=volatile*)
+      * tvalue
+      * int option (* FIXME: use tident instead of value *)
   | INSTR_Phi of typ * (value * ident) list
   | INSTR_Select of tvalue * tvalue * tvalue (* if * then * else *)
   | INSTR_VAArg
   | INSTR_LandingPad
-  | INSTR_Store of bool(*=volatile*) * tvalue * tident * int option
+  | INSTR_Store of bool (*=volatile*) * tvalue * tident * int option
   | INSTR_Fence
   | INSTR_AtomicCmpXchg
   | INSTR_AtomicRMW
-
   (* Terminators *)
   | INSTR_Invoke of tident * tvalue list * tident * tident
   | INSTR_Ret of tvalue
@@ -198,11 +216,11 @@ and value =
   | INSTR_Br of tvalue * tident * tident (*types are constant *)
   | INSTR_Br_1 of tident
   | INSTR_Switch of tvalue * tident * (tvalue * tident) list
-  | INSTR_IndirectBr of tvalue * tident list (* address
-                                              * possible addresses (labels) *)
+  | INSTR_IndirectBr of
+      tvalue * tident list (* address
+                            * possible addresses (labels) *)
   | INSTR_Resume of tvalue
   | INSTR_Unreachable
-
   (* Special `assign` instruction:
    * not a real LLVM instruction, allow to bind an identifier to an instruction *)
   | INSTR_Assign of ident * instr
@@ -220,56 +238,51 @@ and toplevelentry =
 and toplevelentries = toplevelentry list
 
 and global = {
-  g_ident: ident;
-  g_typ: typ;
-  g_constant: bool;
-  g_value: value option;
-
-  g_linkage: linkage option;
-  g_visibility: visibility option;
-  g_dll_storage: dll_storage option;
-  g_thread_local: thread_local_storage option;
-  g_unnamed_addr: bool;
-  g_addrspace: int option;
-  g_externally_initialized: bool;
-  g_section: string option;
-  g_align: int option;
+  g_ident : ident;
+  g_typ : typ;
+  g_constant : bool;
+  g_value : value option;
+  g_linkage : linkage option;
+  g_visibility : visibility option;
+  g_dll_storage : dll_storage option;
+  g_thread_local : thread_local_storage option;
+  g_unnamed_addr : bool;
+  g_addrspace : int option;
+  g_externally_initialized : bool;
+  g_section : string option;
+  g_align : int option;
 }
 
-and thread_local_storage = TLS_Localdynamic
-                         | TLS_Initialexec
-                         | TLS_Localexec
+and thread_local_storage = TLS_Localdynamic | TLS_Initialexec | TLS_Localexec
 
 and declaration = {
-  dc_name: ident;
-  dc_type: typ; (* TYPE_Function (ret_t * args_t) *)
-
+  dc_name : ident;
+  dc_type : typ; (* TYPE_Function (ret_t * args_t) *)
   (* ret_attrs * args_attrs *)
-  dc_param_attrs: param_attr list * param_attr list list;
+  dc_param_attrs : param_attr list * param_attr list list;
 }
 
 and definition = {
-  df_prototype: declaration;
-  df_args: ident list;
-  df_instrs: block list;
-
-  df_linkage: linkage option;
-  df_visibility: visibility option;
-  df_dll_storage: dll_storage option;
-  df_cconv: cconv option;
-  df_attrs: fn_attr list;
-  df_section: string option;
-  df_align: int option;
-  df_gc: string option;
+  df_prototype : declaration;
+  df_args : ident list;
+  df_instrs : block list;
+  df_linkage : linkage option;
+  df_visibility : visibility option;
+  df_dll_storage : dll_storage option;
+  df_cconv : cconv option;
+  df_attrs : fn_attr list;
+  df_section : string option;
+  df_align : int option;
+  df_gc : string option;
 }
 
 and block = string * instr list
 
 and modul = {
-  m_name: string;
-  m_target: toplevelentry;
-  m_datalayout: toplevelentry;
-  m_globals: (string * global) list;
-  m_declarations: (string * declaration) list;
-  m_definitions: (string * definition) list;
+  m_name : string;
+  m_target : toplevelentry;
+  m_datalayout : toplevelentry;
+  m_globals : (string * global) list;
+  m_declarations : (string * declaration) list;
+  m_definitions : (string * definition) list;
 }
