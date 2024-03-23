@@ -321,12 +321,12 @@ let rec instr : env -> Ollvm.Ast.instr -> env * Llvm.llvalue =
         Array.of_list args |> Array.map (fun (t, v) -> value env t v)
       in
       (env, build_call fn args "" env.b)
-  | INSTR_Alloca (ty, nb, _) -> (
+  | INSTR_Alloca (ty, nb, _) ->
       ( env,
         match nb with
         | None -> build_alloca (typ env ty) "" env.b
         | Some (t, nb) ->
-            build_array_alloca (typ env ty) (value env t nb) "" env.b ))
+            build_array_alloca (typ env ty) (value env t nb) "" env.b )
   | INSTR_Load (_, (t, v), _) -> (env, build_load (value env t v) "" env.b)
   | INSTR_Phi (t, incoming) ->
       let incoming =
